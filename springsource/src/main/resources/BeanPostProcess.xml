@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="cpu" class="com.test.springdemo.beanpostprocessor.Cpu">
+        <property name="brand" value="amd"/>
+    </bean>
+    <bean id="ram" class="com.test.springdemo.beanpostprocessor.Ram">
+        <property name="brand" value="kingston"/>
+    </bean>
+    <bean id="pc" class="com.test.springdemo.beanpostprocessor.Pc"/>
+    <bean class="com.test.springdemo.beanpostprocessor.BeanPostProcessorTest"/>
+    <!--<bean class="com.test.springdemo.beanpostprocessor.PostProcessors"/>-->
+</beans>
