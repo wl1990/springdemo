@@ -10,11 +10,15 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.context.request.ServletWebRequest;
 import sun.management.MethodInfo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.util.HashMap;
@@ -29,7 +33,6 @@ public class LogAnnotationAspect {
     @Pointcut("execution(* *(..))")
     public void point(){
 
-
     }
 /*   @Before("point()")
     public void before(){
@@ -39,29 +42,23 @@ public class LogAnnotationAspect {
    @After(value="point() && @annotation(logAnnotation)",argNames = "joinPoint,logAnnotation")
     public void after(JoinPoint joinPoint,LogAnnotation logAnnotation) throws ClassNotFoundException, NotFoundException {
        Object[] args = joinPoint.getArgs();
-       String  classType = joinPoint.getTarget().getClass().getName();
-       Class<?> clazz = Class.forName(classType);
-       String clazzName = clazz.getName();
-       System.out.println("targetName = [" + clazzName + "]");
-       String methodName = joinPoint.getSignature().getName();
-       //获取参数名称和值
-       Map<String,Object > nameAndArgs = this.getFieldsName(this.getClass(), clazzName, methodName,args);
-       if(nameAndArgs == null || nameAndArgs.size()<=0){
-           return ;
-       }
-       for(Map.Entry<String,Object> entry: nameAndArgs.entrySet()){
-           Object object = entry.getValue();
-           if(isPrimite(object.getClass())){
-               System.out.println("key = [" + entry.getKey() + "], value = [" + object + "]");
-           }else{
-               System.out.println("key = [" + entry.getKey() + "], not simple value = [" + object + "]");
-           }
-           if(object.getClass().isAssignableFrom(HttpServletRequest.class)
-                   || object.getClass().isAssignableFrom(HttpServletResponse.class)){
-               System.out.println("key = [" + entry.getKey() + "], value = [" + object + "]");
+       // 获取注解
+       MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+       Method method = signature.getMethod();
+       Annotation[][] methodAnnotations = method.getParameterAnnotations();
+       for(int i=0;i<methodAnnotations.length;i++){
+           Annotation[] paramAnnotion = methodAnnotations[i];
+           for(int j = 0; j < paramAnnotion.length; j++){
+               if(paramAnnotion[j] instanceof TargetType){
+                   System.out.println("i = "+i+" j="+j+ "param annotion="+ paramAnnotion[j]);
+                   System.out.println(" param value="+ args[i]);
+               }
            }
        }
-
+     /*  ServletWebRequest servletContainer = (ServletWebRequest)RequestContextHolder.getRequestAttributes();
+       HttpServletRequest request = servletContainer.getRequest();*/
+       HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+       System.out.println("ip1 = [" + getIpAddress(request) + "], contextpath = [" + request.getServletPath() + "]"+"url="+request.getRequestURL());
        System.out.println("after");
    }
 
@@ -90,4 +87,24 @@ public class LogAnnotationAspect {
     private boolean isPrimite(Class<?> clazz){
         return clazz.isPrimitive() || clazz == String.class;
     }
+
+    public static String getIpAddress(HttpServletRequest request) {
+                String ip = request.getHeader("x-forwarded-for");
+                if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+                        ip = request.getHeader("Proxy-Client-IP");
+                    }
+                if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+                         ip = request.getHeader("WL-Proxy-Client-IP");
+                    }
+              if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+                         ip = request.getHeader("HTTP_CLIENT_IP");
+                     }
+                 if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+                        ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+                     }
+                 if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+                         ip = request.getRemoteAddr();
+                     }
+                 return ip;
+             }
 }

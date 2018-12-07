@@ -10,7 +10,7 @@
     <bean id="ram" class="com.test.springdemo.beanpostprocessor.Ram">
         <property name="brand" value="kingston"/>
     </bean>
-    <bean id="pc" class="com.test.springdemo.beanpostprocessor.Pc"/>
-    <bean class="com.test.springdemo.beanpostprocessor.BeanPostProcessorTest"/>
-    <!--<bean class="com.test.springdemo.beanpostprocessor.PostProcessors"/>-->
+    <!--<bean id="pc" class="com.test.springdemo.beanpostprocessor.Pc"/>-->
+    <!--<bean class="com.test.springdemo.beanpostprocessor.BeanPostProcessorTest"/>-->
+    <bean class="com.test.springdemo.beanpostprocessor.PostProcessors"/>
 </beans>

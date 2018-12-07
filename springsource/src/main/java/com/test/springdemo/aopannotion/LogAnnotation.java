@@ -7,5 +7,8 @@ import java.lang.annotation.*;
 @Documented
 public @interface LogAnnotation {
     String[] values() default {};
+    EnumInfo name() default EnumInfo.Positive;
+    EnumEventType eventType() default EnumEventType.other;
+
 
 }
