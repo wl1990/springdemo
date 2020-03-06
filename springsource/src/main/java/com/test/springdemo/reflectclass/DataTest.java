@@ -10,10 +10,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.File;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -35,10 +31,30 @@ public class DataTest {
         logger.info("parameter========="+entity.getScore());
         logger.info("parameter========="+group);*/
         System.out.println("num = [" + entity.getName() + "], entity = [" + entity.getSex() + "], group = [" + entity.getAge() + "]");
-
     }
 
     @DataProvider(name = "test1")
+    public Iterator<Object[]> testProvider(Method method) throws Exception {
+        Class[] paramterTypes = method.getParameterTypes();//返回缩获取方法的所有入参
+        JsonFilePath path = method.getAnnotation(JsonFilePath.class);
+        String filePath = path.value();
+        List<Object[]> list = new ArrayList<Object[]>();
+
+        String input = FileUtils.readFileToString(new File(filePath), "UTF-8");
+        Object jsonObject=JSON.parse(input);
+        if(jsonObject instanceof JSONArray){
+            JSONArray jsonA= (JSONArray) jsonObject;
+            for (int i = 0; i < jsonA.size(); i++) {
+                Object obj = jsonA.get(i);
+                 if (obj instanceof JSONObject) {   //json解析（判断是JSONObject）
+                    list.add(new Object[]{getObject(jsonA.getJSONObject(i), paramterTypes[0])});
+                }
+            }
+        }
+        return list.iterator();
+    }
+
+/*    @DataProvider(name = "test1")
     public Iterator<Object[]> testProvider(Method method) throws Exception {
         Class[] paramterTypes = method.getParameterTypes();//返回缩获取方法的所有入参
         JsonFilePath path = method.getAnnotation(JsonFilePath.class);
@@ -67,10 +83,8 @@ public class DataTest {
         }else if(jsonObject instanceof JSONObject){
             list.add(new Object[]{getObject((JSONObject) jsonObject, paramterTypes[0])});
         }
-
-
         return list.iterator();
-    }
+    }*/
 
     private Object[] getObject(JSONArray jsonArray, Class c) throws Exception {
         Object[] objects = new Object[jsonArray.size()];
@@ -113,7 +127,6 @@ public class DataTest {
 
 
     private Object getObject(JSONObject jo, Class c) throws Exception {
-        System.out.println("c=====" + c.getName());
      /*   if(c==Long.class || c==long.class || c==String.class || c==Date.class || c==Double.class || c==Integer.class || c==int.class){
             return jo;
         }*/
