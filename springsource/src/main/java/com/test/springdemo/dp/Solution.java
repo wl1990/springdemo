@@ -1,7 +1,9 @@
 package com.test.springdemo.dp;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * 递归和动态规划
@@ -73,6 +75,31 @@ public class Solution {
         return intervals.length - dp[intervals.length - 1];
     }
 
+    /**
+     * 动态规划金额最少金币
+     */
+    public  static int coinChange(Integer[] coins,int amount){
+        int[] dp=new int[amount+1];
+        Arrays.fill(dp,amount+1);
+        Arrays.sort(coins, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o2-o1;
+            }
+        });
+        dp[0]=0;
+        for(int i=0;i<dp.length;i++){
+            for(int coin:coins){
+                if(i-coin<0){
+                    continue;
+                }
+                dp[i]=Math.min(dp[i],1+dp[i-coin]);
+            }
+        }
+        return (dp[amount]==amount+1) ? -1:dp[amount];
+    }
+
+
     public static  void main(String[] args) {
         // 初始化区间
         Interval[] intervals = {
@@ -82,9 +109,19 @@ public class Solution {
                 new Interval(8, 10),
                 new Interval(9, 11)
         };
-        int result = removeDuplicateIntervas(intervals);
+      /*  int result = removeDuplicateIntervas(intervals);
         System.out.println("result = " + result);
         int dpresult=removeSubDuplicateWithDP(intervals);
-        System.out.println("dpresult = " + dpresult);
+        System.out.println("dpresult = " + dpresult);*/
+        Integer[] coins=new Integer[6];
+        coins[0]=5;
+        coins[1]=10;
+        coins[2]=50;
+        coins[3]=20;
+        coins[4]=100;
+        coins[5]=2;
+//        coins[6]=1;
+
+        System.out.println("args = [" + coinChange(coins,131) + "]");
     }
 }
