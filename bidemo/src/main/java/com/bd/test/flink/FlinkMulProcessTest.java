@@ -49,7 +49,7 @@ public class FlinkMulProcessTest {
                     count++;
                     collector.collect("count="+count+"]context="+suff);
                 }
-            });
+            }).setParallelism(1).name("sub param");
             ruleTriggerStreamList.add(triggerStream);
         }
         System.out.println("end flink ruleTriggerStreamList  size="+ruleTriggerStreamList.size());

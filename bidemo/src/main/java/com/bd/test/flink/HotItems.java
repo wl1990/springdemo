@@ -100,6 +100,7 @@ public class HotItems {
             }
             itemState.clear();
             allItems.sort(new Comparator<ItemViewCount>() {
+                @Override
                 public int compare(ItemViewCount o1, ItemViewCount o2) {
                     return (int)(o2.viewCount-o1.viewCount);
                 }
@@ -123,18 +124,22 @@ public class HotItems {
 
 
     public static class CountAgg implements AggregateFunction<UserBehavior,Long,Long> {
+        @Override
         public Long createAccumulator() {
             return 0L;
         }
 
+        @Override
         public Long add(UserBehavior userBehavior, Long acc) {
             return acc+1;
         }
 
+        @Override
         public Long getResult(Long accumulator) {
             return accumulator;
         }
 
+        @Override
         public Long merge(Long a, Long b) {
             return a+b;
         }
@@ -142,6 +147,7 @@ public class HotItems {
 
     public static class WindowResultFunction implements WindowFunction<Long,ItemViewCount,Tuple,TimeWindow> {
 
+        @Override
         public void apply(Tuple key, TimeWindow timeWindow, Iterable<Long> iterable, Collector<ItemViewCount> collector) throws Exception {
             Long itemId=((Tuple1<Long>)key).f0;
             Long count=iterable.iterator().next();
