@@ -16,7 +16,9 @@ public class PrintTest {
         @Override
         public void run() {
             try {
-                this.currentPrint.product();
+//                this.currentPrint.product();
+                this.currentPrint.singleConditionProduce();
+//                this.currentPrint.synPrpducer();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -31,7 +33,9 @@ public class PrintTest {
         @Override
         public void run() {
             try {
-                this.currentPrint.consumer();
+//                this.currentPrint.consumer();
+                this.currentPrint.singleConConsumer();
+//                this.currentPrint.synConsumer();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
