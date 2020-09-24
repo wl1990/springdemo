@@ -1,15 +1,14 @@
 package com.test.springdemo.currentdemo.synch;
 
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import java.util.concurrent.*;
 
 public class SynchronizedDemo {
-    ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
-            .setNameFormat("demo-pool-%d").build();
-    ExecutorService singleThreadPool = new ThreadPoolExecutor(5, 10,
-            0L, TimeUnit.MILLISECONDS,
-            new LinkedBlockingQueue<Runnable>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
+//    ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
+//            .setNameFormat("demo-pool-%d").build();
+//    ExecutorService singleThreadPool = new ThreadPoolExecutor(5, 10,
+//            0L, TimeUnit.MILLISECONDS,
+//            new LinkedBlockingQueue<Runnable>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
 
     private static SynchronizedDemo synchronizedDemo=new SynchronizedDemo();
     public synchronized static void  staticSynTest() throws InterruptedException {
