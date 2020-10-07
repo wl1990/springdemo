@@ -3,13 +3,37 @@ package com.test.springdemo.leecode.tree;
 import java.util.Arrays;
 
 public class BTreeDemo<E> {
-    private class Node<E>{
+    class Node<E>{
         private Node left;
         private Node right;
         private E e;
+
+        public Node getLeft() {
+            return left;
+        }
+
+        public void setLeft(Node left) {
+            this.left = left;
+        }
+
+        public Node getRight() {
+            return right;
+        }
+
+        public void setRight(Node right) {
+            this.right = right;
+        }
+
+        public E getE() {
+            return e;
+        }
+
+        public void setE(E e) {
+            this.e = e;
+        }
     }
 
-    private Node<E> root=null;
+    Node<E> root=null;
 
     public void addNode(E e){
         Node<E> node=new Node<>();
@@ -101,7 +125,7 @@ public class BTreeDemo<E> {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         BTreeDemo<Long> bTreeDemo=new BTreeDemo<>();
         bTreeDemo.addNode(3L);
         bTreeDemo.addNode(5L);
