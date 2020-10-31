@@ -10,7 +10,7 @@ public class MyThreadLocal extends ThreadLocal<MyThreadLocal.Holder>{
     public static void assign(String userid,String ip){
         instance.get().assign(ip,userid);
     }
-    public String getUserId(){
+    public static String getUserId(){
         return instance.get().getUserid();
     }
     public static class Holder{
