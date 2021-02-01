@@ -34,6 +34,8 @@ public class KMPStringDemo {
         for(int i=2;i<pattern.length()-1;i++){
             if(pattern.charAt(max)==pattern.charAt(i-1)){
                 max=max+1;
+            }else{
+                max=0;
             }
             next[i]=max;
         }
