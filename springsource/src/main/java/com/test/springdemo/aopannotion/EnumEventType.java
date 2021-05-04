@@ -41,4 +41,17 @@ public enum EnumEventType {
     public void setName(String name) {
         this.name = name;
     }
+
+    public static void main(String[] args) {
+        EnumEventType enumEventType=EnumEventType.resume_operator;
+        switch(enumEventType){
+            case account_operator:
+                System.out.println("-----");
+            case resume_operator:
+                System.out.println("--****--");
+            default:
+                System.out.println("--&&&&&&--");
+        }
+    }
+
 }

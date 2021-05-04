@@ -36,37 +36,36 @@ public class CurrentPrint {
 
 
     public void singleConditionProduce() throws InterruptedException {
+        while (true) {
         lock.lock();
         try {
-            while (true) {
                 while (simple >= 1) {
                     System.out.println("produce await");
                     proCon.await();
                 }
                 simple++;
                 System.out.println("single produce");
-                proCon.signal();
-
-            }
+                cliCon.signal();
         }finally{
             lock.unlock();
+        }
         }
     }
 
     public void singleConConsumer() throws InterruptedException {
-        lock.lock();
-        try{
-            while(true){
-                while(simple<1){
+        while(true) {
+            lock.lock();
+            try {
+                while (simple < 1) {
                     System.out.println("consumer await");
-                    proCon.await();
+                    cliCon.await();
                 }
                 simple--;
                 System.out.println("single consumer");
                 proCon.signal();
+            } finally {
+                lock.unlock();
             }
-        }finally{
-            lock.unlock();
         }
     }
     public void product() throws InterruptedException {
