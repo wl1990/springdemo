@@ -6,6 +6,7 @@ import java.util.concurrent.CyclicBarrier;
 public class CyclicBarrierTest {
     static int n=5;
     public static void main(String[] args) {
+
         CyclicBarrier cyclicBarrier=new CyclicBarrier(n, new Runnable() {
             @Override
             public void run() {
