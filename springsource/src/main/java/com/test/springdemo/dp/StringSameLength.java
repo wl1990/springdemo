@@ -1,6 +1,7 @@
 package com.test.springdemo.dp;
 
-import org.springframework.util.StringUtils;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class StringSameLength {
     public static int maxLen(String s1,String s2){
