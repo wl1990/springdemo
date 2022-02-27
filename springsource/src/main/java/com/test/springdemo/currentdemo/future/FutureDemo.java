@@ -21,14 +21,16 @@ public class FutureDemo {
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    public void fdemo() throws ExecutionException, InterruptedException {
+    public void fdemo() throws ExecutionException, InterruptedException, TimeoutException {
         ExecutorService executorService= Executors.newCachedThreadPool();
+        Long a=System.currentTimeMillis();
         for(int i=0;i<5;i++) {
             Callable<String> task=new Task();
             FutureTask futureTask = new FutureTask(task);
             executorService.submit(futureTask);
-            String result= (String) futureTask.get();
-            System.out.println("result="+result);
+            System.out.println("result start --time="+(System.currentTimeMillis()-a));
+            String result= (String) futureTask.get(8,TimeUnit.SECONDS);
+            System.out.println("result="+result+"--time="+(System.currentTimeMillis()-a));
         }
     }
 
@@ -64,10 +66,10 @@ public class FutureDemo {
         }
     }
 
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
+    public static void main(String[] args) throws ExecutionException, InterruptedException, TimeoutException {
         FutureDemo demo=new FutureDemo();
-//        demo.fdemo();
-        demo.myfdemo();
+        demo.fdemo();
+//        demo.myfdemo();
         System.out.println("---main--");
         TimeUnit.SECONDS.sleep(10);
     }
